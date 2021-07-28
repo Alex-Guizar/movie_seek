@@ -2,18 +2,46 @@ const express = require('express'),
   morgan = require('morgan');
 const app = express();
 
-let topBooks = [
+let topMovies = [
   {
-    title: 'Harry Potter and the sorcerer\'s Stone',
-    author: 'J.K. Rowling'
+    title: 'The Departed',
+    director: 'Martin Scorsese'
   },
   {
-    title: 'Lord of the Rings',
-    author: 'J.R.R. Tolkien'
+    title: 'Inglourious Basterds',
+    director: 'Quentin Tarantino'
   },
   {
-    title: 'Twilight',
-    author: 'Stephanie Meyer'
+    title: 'The Shawshank Redemption',
+    director: 'Frank Darabont'
+  },
+  {
+    title: 'The Dark Knight',
+    director: 'Christopher Nolan'
+  },
+  {
+    title: 'Pulp Fiction',
+    director: 'Quentin Tarantino'
+  },
+  {
+    title: 'Fight Club',
+    director: 'David Fincher'
+  },
+  {
+    title: 'Spirited Away',
+    director: 'Hayao Miyazaki'
+  },
+  {
+    title: 'Gladiator',
+    director: 'Ridley Scott'
+  },
+  {
+    title: 'Superbad',
+    director: 'Greg Mottola'
+  },
+  {
+    title: 'Inception',
+    director: 'Christopher Nolan'
   }
 ];
 
@@ -21,15 +49,13 @@ app.use(morgan('common'));
 
 // GET request
 app.get('/', (req, res) => {
-  res.send('Welcome to my book club!');
+  res.send('Welcome to Movie Seek!');
 });
 
-app.get('/documentation', (req, res) => {
-  res.sendFile('public/documentation.html', {root: __dirname});
-});
+app.use(express.static('public'));
 
-app.get('/books', (req, res) => {
-  res.json(topBooks);
+app.get('/movies', (req, res) => {
+  res.json(topMovies);
 });
 
 // listen for requests
