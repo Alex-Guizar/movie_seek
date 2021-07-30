@@ -9,67 +9,424 @@
 
     <p>A server-side component of a “movies” web application. The web application will provide users with access to information about different movies, directors, and genres. Users will be able to sign up, update their personal information, and create a list of their favorite movies.</p>
 
-    <h2>Endpoints</h2>
-    <h3>Movies</h3>
-    <table>
-      <thead>
-        <tr>
-          <td>Request</td>
-          <td>URL</td>
-          <td>Response</td>
-        </tr>
-      </thead>
+    <div>
+      <h2>Endpoints</h2>
+      <h3>Movies</h3>
+      <table>
+        <thead>
+          <tr>
+            <td>Request</td>
+            <td>URL</td>
+            <td>Response</td>
+          </tr>
+        </thead>
 
-      <tbody>
-        <tr>
-          <td>GET</td> <td>/movies</td> <td>Return a list of ALL movies to the user</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>GET</td> <td><a href="#std-search">/movies</a></td> <td>Return a list of ALL movies to the user</td>
+          </tr>
 
-        <tr>
-          <td>GET</td> <td>/movies/:title</td> <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
-        </tr>
+          <tr>
+            <td>GET</td> <td><a href="#std-search">/movies/:title</a></td> <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
+          </tr>
 
-        <tr>
-          <td>GET</td> <td>/movies/genres/:title</td> <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
-        </tr>
+          <tr>
+            <td>GET</td> <td><a href="#genre-search">/movies/genres/:title</a></td> <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
+          </tr>
 
-        <tr>
-          <td>GET</td> <td>/movies/directors/:name</td> <td>Return data about a director (bio, birth year, death year) by name</td>
-        </tr>
-      </tbody>
-    </table>
+          <tr>
+            <td>GET</td> <td><a href="#director-search">/movies/directors/:name</a></td> <td>Return data about a director (bio, birth year, death year) by name</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <h3>Users</h3>
-    <table>
-      <thead>
-        <tr>
-          <td>Request</td>
-          <td>URL</td>
-          <td>Response</td>
-        </tr>
-      </thead>
+      <h3>Users</h3>
+      <table>
+        <thead>
+          <tr>
+            <td>Request</td>
+            <td>URL</td>
+            <td>Response</td>
+          </tr>
+        </thead>
 
-      <tbody>
-        <tr>
-          <td>POST</td> <td>/users</td> <td>Allow new users to register</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>POST</td> <td><a href="#user-register">/users</a></td> <td>Allow new users to register</td>
+          </tr>
 
-        <tr>
-          <td>PUT</td> <td>/users/:name</td> <td>Allow users to update their user info (username)</td>
-        </tr>
+          <tr>
+            <td>PUT</td> <td><a href="#user-info-update">/users/:name</a></td> <td>Allow users to update their user info (username)</td>
+          </tr>
 
-        <tr>
-          <td>PUT</td> <td>/users/:name/list/:title</td> <td>Allow users to add a movie to their list of favorites (showing only a text that a movie has been added—more on this later)</td>
-        </tr>
+          <tr>
+            <td>DELETE</td> <td><a href="#user-info-update">/users/:name</a></td> <td>Allow existing users to deregister (showing only a text that a user email has been removed—more on this later)</td>
+          </tr>
 
-        <tr>
-          <td>DELETE</td> <td>/users/:name/list/:title</td> <td>Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later)</td>
-        </tr>
+          <tr>
+            <td>PUT</td> <td><a href="#user-list-update">/users/:name/list/:title</a></td> <td>Allow users to add a movie to their list of favorites (showing only a text that a movie has been added—more on this later)</td>
+          </tr>
 
-        <tr>
-          <td>DELETE</td> <td>/users/:name</td> <td>Allow existing users to deregister (showing only a text that a user email has been removed—more on this later)</td>
-        </tr>
-      </tbody>
-    </table>
+          <tr>
+            <td>DELETE</td> <td><a href="#user-list-update">/users/:name/list/:title</a></td> <td>Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="std-search">
+      <h2>Standard search API</h2>
+
+      <p>Returns collection of movies and relevant data.</p>
+
+      <h3>Resource URL</h3>
+      <p>/movies, /movies/:title</p>
+
+      <h3>Resource Information</h3>
+
+      <table>
+        <tbody>
+          <tr>
+            <td>Response formats</td> <td>JSON</td>
+            <td>Method Types</td> <td>GET</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Parameters</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <td>Name</td> <td>Required</td> <td>Description</td> <td>Example</td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>none</td> <td>optional</td> <td>Returns full catalogue of movies.</td> <td></td>
+          </tr>
+
+          <tr>
+            <td>title</td> <td>optional</td> <td>Returns individual movie and it's data, by title.</td> <td>The Departed</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Example Request Body</h3>
+
+      <p>None</p>
+
+      <h3>Example Response Body</h3>
+
+      <pre>
+        <code>
+{
+  title: 'The Departed',
+  director: 'Martin Scorsese',
+  genre: 'crime',
+  description: 'An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in South Boston.',
+  imageURL: ''
+},
+{
+  title: 'Inglourious Basterds',
+  director: 'Quentin Tarantino',
+  genre: 'Adventure',
+  description: 'In Nazi-occupied France during World War II, a plan to assassinate Nazi leaders by a group of Jewish U.S. soldiers coincides with a theatre owner\'s vengeful plans for the same.',
+  imageURL: ''
+},
+{
+  title: 'The Shawshank Redemption',
+  director: 'Frank Darabont',
+  genre: 'Drama',
+  description: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
+  imageURL: ''
+},
+{
+  title: 'The Dark Knight',
+  director: 'Christopher Nolan',
+  genre: 'Action',
+  description: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
+  imageURL: ''
+}
+        </code>
+      </pre>
+    </div>
+
+    <div id="genre-search">
+      <h2>Genre search API</h2>
+
+      <p>Returns collection of movies based on genre title.</p>
+
+      <h3>Resource URL</h3>
+      <p>/movies/genres/:title</p>
+
+      <h3>Resource Information</h3>
+
+      <table>
+        <tbody>
+          <tr>
+            <td>Response formats</td> <td>JSON</td>
+            <td>Method Types</td> <td>GET</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Parameters</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <td>Name</td> <td>Required</td> <td>Description</td> <td>Example</td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>title</td> <td>required</td> <td>Returns collection of movies based on genre title.</td> <td>action</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Example Request Body</h3>
+
+      <p>None</p>
+
+      <h3>Example Response Body</h3>
+
+      <pre>
+        <code>
+{
+  title: 'The Dark Knight',
+  director: 'Christopher Nolan',
+  genre: 'action',
+  description: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
+  imageURL: ''
+},
+{
+  title: 'Gladiator',
+  director: 'Ridley Scott',
+  genre: 'action',
+  description: 'A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.',
+  imageURL: ''
+},
+{
+  title: 'Inception',
+  director: 'Christopher Nolan',
+  genre: 'action',
+  description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
+  imageURL: ''
+}
+        </code>
+      </pre>
+    </div>
+
+    <div id="director-search">
+      <h2>Director search API</h2>
+
+      <p>Returns data on director based on name.</p>
+
+      <h3>Resource URL</h3>
+      <p>/movies/directors/:name</p>
+
+      <h3>Resource Information</h3>
+
+      <table>
+        <tbody>
+          <tr>
+            <td>Response formats</td> <td>JSON</td>
+            <td>Method Types</td> <td>GET</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Parameters</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <td>Name</td> <td>Required</td> <td>Description</td> <td>Example</td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>name</td> <td>required</td> <td>Returns data on director based on name.</td> <td>Christopher Nolan</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Example Request Body</h3>
+
+      <p>None</p>
+
+      <h3>Example Response Body</h3>
+
+      <pre>
+        <code>
+  {
+    name: 'Christopher Nolan',
+    bio: 'Christopher Edward Nolan CBE is a British-American film director, producer, and screenwriter. His directorial efforts have grossed more than US$5 billion worldwide, garnered 36 Oscar nominations and 11 wins.',
+    birthYear: '1970',
+    deathYear: 'NA'
+  }
+        </code>
+      </pre>
+    </div>
+
+    <div id="user-register">
+      <h2>User register API</h2>
+
+      <p>Allow new users to register.</p>
+
+      <h3>Resource URL</h3>
+      <p>/users</p>
+
+      <h3>Resource Information</h3>
+
+      <table>
+        <tbody>
+          <tr>
+            <td>Response formats</td> <td>JSON</td>
+            <td>Method Types</td> <td>POST</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Parameters</h3>
+
+      <p>None</p>
+
+      <h3>Example Request Body</h3>
+
+      <pre>
+        <code>
+{
+  username: 'NewMovieUser',
+  email: 'movieuser@gmail.com',
+  password: '******************'
+}
+        </code>
+      </pre>
+
+      <h3>Example Response Body</h3>
+
+      <pre>
+        <code>
+{
+  id: '53849'
+  username: 'NewMovieUser',
+  email: 'movieuser@gmail.com',
+  password: '******************'
+}
+        </code>
+      </pre>
+    </div>
+
+    <div id="user-info-update">
+      <h2>User information update API</h2>
+
+      <p>Allow users to update their information or deregister their profile.</p>
+
+      <h3>Resource URL</h3>
+      <p>/users/:name</p>
+
+      <h3>Resource Information</h3>
+
+      <table>
+        <tbody>
+          <tr>
+            <td>Response formats</td> <td>JSON</td>
+            <td>Method Types</td> <td>PUT, DELETE</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Parameters</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <td>Name</td> <td>Required</td> <td>Description</td> <td>Example</td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>name</td> <td>required</td> <td>Username of user that is to be updated.</td> <td>NewMovieUser</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Example Request Body</h3>
+
+      <pre>
+        <code>
+{
+  username: 'TrueMovieUser'
+}
+        </code>
+      </pre>
+
+      <h3>Example Response Body</h3>
+
+      <pre>
+        <code>
+{
+  id: '53849'
+  username: 'TrueMovieUser',
+  email: 'movieuser@gmail.com',
+  password: '******************'
+}
+        </code>
+      </pre>
+    </div>
+
+    <div id="user-list-update">
+      <h2>User favorite movie list update API</h2>
+
+      <p>Allow users to add or delete a movie from their list of favorites.</p>
+
+      <h3>Resource URL</h3>
+      <p>/users/:name/list/:title</p>
+
+      <h3>Resource Information</h3>
+
+      <table>
+        <tbody>
+          <tr>
+            <td>Response formats</td> <td>String</td>
+            <td>Method Types</td> <td>PUT, DELETE</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Parameters</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <td>Name</td> <td>Required</td> <td>Description</td> <td>Example</td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>name</td> <td>required</td> <td>Username of user that is to be updated.</td> <td>TrueMovieUser</td>
+          </tr>
+          <tr>
+            <td>title</td> <td>required</td> <td>Title of the movie to be added/deleted from the list</td> <td>The Departed</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Example Request Body</h3>
+
+      <p>None</p>
+
+      <h3>Example Response Body</h3>
+
+      <p>"Movie Title" has been successfully added/delete.</p>
+    </div>
   </body>
 </html>
