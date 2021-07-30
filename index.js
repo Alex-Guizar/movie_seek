@@ -2,7 +2,7 @@ const express = require('express'),
   morgan = require('morgan');
 const app = express();
 
-let topMovies = [
+let movies = [
   {
     title: 'The Departed',
     director: 'Martin Scorsese',
@@ -81,12 +81,12 @@ app.use(morgan('common'));
 
 // Gets the list of data about ALL movies
 app.get('/movies', (req, res) => {
-  res.json(topMovies);
+  res.json(movies);
 });
 
 // Gets the data of a single movie, by title
 app.get('/movies/:title', (req, res) => {
-  res.json(topMovies.find((movie) => student.title === req.params.title));
+  res.json(movies.find((movie) => student.title === req.params.title));
 });
 
 // Gets the list of data about ALL movies in a genre, by genre name
