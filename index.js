@@ -86,7 +86,7 @@ app.get('/movies', (req, res) => {
 
 // Gets the data of a single movie, by title
 app.get('/movies/:title', (req, res) => {
-  res.json(movies.find((movie) => student.title === req.params.title));
+  res.json(movies.find((movie) => movie.title === req.params.title));
 });
 
 // Gets the list of data about ALL movies in a genre, by genre name
