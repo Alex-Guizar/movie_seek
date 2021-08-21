@@ -1,81 +1,17 @@
 const express = require('express'),
-  morgan = require('morgan');
+  bodyParser = require('body-parser'),
+  morgan = require('morgan'),
+  mongoose = require('mongoose'),
+  Models = require('./models.js');
 const app = express();
+const Movies = Models.Movie;
+const Users = Models.User;
 
-let movies = [
-  {
-    title: 'The Departed',
-    director: 'Martin Scorsese',
-    genre: 'crime',
-    description: 'An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in South Boston.',
-    imageURL: ''
-  },
-  {
-    title: 'Inglourious Basterds',
-    director: 'Quentin Tarantino',
-    genre: 'adventure',
-    description: 'In Nazi-occupied France during World War II, a plan to assassinate Nazi leaders by a group of Jewish U.S. soldiers coincides with a theatre owner\'s vengeful plans for the same.',
-    imageURL: ''
-  },
-  {
-    title: 'The Shawshank Redemption',
-    director: 'Frank Darabont',
-    genre: 'drama',
-    description: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
-    imageURL: ''
-  },
-  {
-    title: 'The Dark Knight',
-    director: 'Christopher Nolan',
-    genre: 'action',
-    description: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
-    imageURL: ''
-  },
-  {
-    title: 'Pulp Fiction',
-    director: 'Quentin Tarantino',
-    genre: 'crime',
-    description: 'The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.',
-    imageURL: ''
-  },
-  {
-    title: 'Fight Club',
-    director: 'David Fincher',
-    genre: 'drama',
-    description: 'An insomniac office worker and a devil-may-care soap maker form an underground fight club that evolves into much more.',
-    imageURL: ''
-  },
-  {
-    title: 'Spirited Away',
-    director: 'Hayao Miyazaki',
-    genre: 'animation',
-    description: 'During her family\'s move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.',
-    imageURL: ''
-  },
-  {
-    title: 'Gladiator',
-    director: 'Ridley Scott',
-    genre: 'action',
-    description: 'A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.',
-    imageURL: ''
-  },
-  {
-    title: 'Superbad',
-    director: 'Greg Mottola',
-    genre: 'comedy',
-    description: 'Two co-dependent high school seniors are forced to deal with separation anxiety after their plan to stage a booze-soaked party goes awry.',
-    imageURL: ''
-  },
-  {
-    title: 'Inception',
-    director: 'Christopher Nolan',
-    genre: 'action',
-    description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
-    imageURL: ''
-  }
-];
+mongoose.connect('mongodb://localhost:27017/movieSeek', { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(morgan('common'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Movie Requests
 
@@ -101,9 +37,40 @@ app.get('/movies/directors/:name', (req, res) => {
 
 // User Requests
 
+// Request user data
+app.get('/users', (req, res) => {
+  Users.find()
+    .then((users) => res.status(201).json(users))
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 // Add data for new user to our list of users
 app.post('/users', (req, res) => {
-  res.send('User will be added to list here.');
+  Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + ' already exists');
+      } else {
+        Users.create({
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday
+        })
+        .then((user) => res.status(201).json(user))
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 app.put('/users/:name', (req, res) => {
