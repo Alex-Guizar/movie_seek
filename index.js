@@ -109,7 +109,7 @@ app.put('/users/:username', (req, res) => {
       $set: {
         Username: req.body.Username,
         Password: req.body.Password,
-        Email: req.body.Password,
+        Email: req.body.Email,
         Birthday: req.body.Birthday
       }
     },
@@ -121,13 +121,12 @@ app.put('/users/:username', (req, res) => {
       } else {
         res.status(200).json(updatedUser);
       }
-    }
-  });
+    });
 });
 
-app.put('/users/:username/movies/:movieID', (req, res) => {
+app.post('/users/:username/movies/:movieID', (req, res) => {
   Users.findOneAndUpdate({ 'Username': req.params.username }, {
-    $push: { FavoriteMovies: req.params.MovieID }
+    $push: { FavoriteMovies: req.params.movieID }
   },
   { new: true },
   (err, updatedUser) => {
@@ -135,7 +134,7 @@ app.put('/users/:username/movies/:movieID', (req, res) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     } else {
-      res.status(200).json(updatedUser);
+      res.status(201).json(updatedUser);
     }
   });
 });
