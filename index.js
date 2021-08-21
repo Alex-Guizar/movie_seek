@@ -17,30 +17,51 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Gets the list of data about ALL movies
 app.get('/movies', (req, res) => {
-  res.json(movies);
+  Movies.find()
+    .then((movies) => res.status(200).json(movies))
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err)
+    });
 });
 
 // Gets the data of a single movie, by title
 app.get('/movies/:title', (req, res) => {
-  res.json(movies.find((movie) => movie.title === req.params.title));
+  console.log(req.params.title);
+  Movies.find({ 'Title': req.params.title })
+    .then((movies) => res.status(200).json(movies))
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err)
+    });
 });
 
 // Gets the list of data about ALL movies in a genre, by genre name
-app.get('/movies/genres/:title', (req, res) => {
-  res.send('This is a list of movies in a genre.');
+app.get('/movies/genres/:name', (req, res) => {
+  Movies.find({ 'Genre.Name': req.params.name })
+    .then((movies) => res.status(200).json(movies[0].Genre))
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 // Gets the data of a single director, by name
 app.get('/movies/directors/:name', (req, res) => {
-  res.send('This is a JSON object with the director\'s info');
-})
+  Movies.find({ 'Director.Name': req.params.name })
+    .then((movies) => res.status(200).json(movies[0].Director))
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 
 // User Requests
 
 // Request user data
 app.get('/users', (req, res) => {
   Users.find()
-    .then((users) => res.status(201).json(users))
+    .then((users) => res.status(200).json(users))
     .catch((err) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
