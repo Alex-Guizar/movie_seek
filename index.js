@@ -104,6 +104,7 @@ app.post('/users', (req, res) => {
     });
 });
 
+// Update data for specified user
 app.put('/users/:username', (req, res) => {
   Users.findOneAndUpdate({ 'Username': req.params.username }, {
       $set: {
@@ -124,6 +125,7 @@ app.put('/users/:username', (req, res) => {
     });
 });
 
+// Add movie to user's "Favorites" list by movie ObjectId
 app.post('/users/:username/movies/:movieID', (req, res) => {
   Users.findOneAndUpdate({ 'Username': req.params.username }, {
     $push: { FavoriteMovies: req.params.movieID }
@@ -139,6 +141,7 @@ app.post('/users/:username/movies/:movieID', (req, res) => {
   });
 });
 
+// Delete movie from user's "Favorites" list by movie ObjectId
 app.delete('/users/:username/movies/:movieID', (req, res) => {
   Users.findOneAndUpdate({ 'Username': req.params.username }, {
     $pull: { FavoriteMovies: req.params.movieID }
@@ -154,6 +157,7 @@ app.delete('/users/:username/movies/:movieID', (req, res) => {
   });
 });
 
+// Delete user from registry
 app.delete('/users/:username', (req, res) => {
   Users.findOneAndRemove({ 'Username': req.params.username })
     .then((user) => {
