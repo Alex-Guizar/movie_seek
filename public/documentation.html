@@ -3,430 +3,470 @@
   <head>
     <meta charset="utf-8">
     <title>Movie Seek</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <link href="css/styles.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <h1>Movie Seek</h1>
+    <div class="page_wrap">
+      <h1>Movie Seek</h1>
 
-    <p>A server-side component of a “movies” web application. The web application will provide users with access to information about different movies, directors, and genres. Users will be able to sign up, update their personal information, and create a list of their favorite movies.</p>
+      <p>A server-side component of a “movies” web application. The web application will provide users with access to information about different movies, directors, and genres. Users will be able to sign up, update their personal information, and create a list of their favorite movies.</p>
 
-    <div>
-      <h2>Endpoints</h2>
-      <h3>Movies</h3>
-      <table>
-        <thead>
-          <tr>
-            <td>Request</td>
-            <td>URL</td>
-            <td>Response</td>
-          </tr>
-        </thead>
+      <div>
+        <h2>Endpoints</h2>
+        <h3>Movies</h3>
+        <table class="param_table">
+          <thead>
+            <tr>
+              <th>Request</th>
+              <th>URL</th>
+              <th>Response</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr>
-            <td>GET</td> <td><a href="#std-search">/movies</a></td> <td>Return a list of ALL movies to the user</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>GET</td> <td><a href="#std-search">/movies</a></td> <td>Return a list of ALL movies to the user</td>
+            </tr>
 
-          <tr>
-            <td>GET</td> <td><a href="#std-search">/movies/:title</a></td> <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
-          </tr>
+            <tr>
+              <td>GET</td> <td><a href="#std-search">/movies/:title</a></td> <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
+            </tr>
 
-          <tr>
-            <td>GET</td> <td><a href="#genre-search">/movies/genres/:title</a></td> <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
-          </tr>
+            <tr>
+              <td>GET</td> <td><a href="#genre-search">/movies/genres/:name</a></td> <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
+            </tr>
 
-          <tr>
-            <td>GET</td> <td><a href="#director-search">/movies/directors/:name</a></td> <td>Return data about a director (bio, birth year, death year) by name</td>
-          </tr>
-        </tbody>
-      </table>
+            <tr>
+              <td>GET</td> <td><a href="#director-search">/movies/directors/:name</a></td> <td>Return data about a director (bio, birth year, death year) by name</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <h3>Users</h3>
-      <table>
-        <thead>
-          <tr>
-            <td>Request</td>
-            <td>URL</td>
-            <td>Response</td>
-          </tr>
-        </thead>
+        <h3>Users</h3>
+        <table class="param_table">
+          <thead>
+            <tr>
+              <th>Request</th>
+              <th>URL</th>
+              <th>Response</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr>
-            <td>POST</td> <td><a href="#user-register">/users</a></td> <td>Allow new users to register</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>GET</td> <td><a href="#user-register">/users</a></td> <td>Retrieve full list of users</td>
+            </tr>
 
-          <tr>
-            <td>PUT</td> <td><a href="#user-info-update">/users/:name</a></td> <td>Allow users to update their user info (username)</td>
-          </tr>
+            <tr>
+              <td>POST</td> <td><a href="#user-register">/users</a></td> <td>Allow new users to register</td>
+            </tr>
 
-          <tr>
-            <td>DELETE</td> <td><a href="#user-info-update">/users/:name</a></td> <td>Allow existing users to deregister (showing only a text that a user email has been removed—more on this later)</td>
-          </tr>
+            <tr>
+              <td>GET</td> <td><a href="#user-info-update">/users/:username</a></td> <td>Retrieve single user by username</td>
+            </tr>
 
-          <tr>
-            <td>PUT</td> <td><a href="#user-list-update">/users/:name/list/:title</a></td> <td>Allow users to add a movie to their list of favorites (showing only a text that a movie has been added—more on this later)</td>
-          </tr>
+            <tr>
+              <td>PUT</td> <td><a href="#user-info-update">/users/:username</a></td> <td>Allow users to update their user info (username)</td>
+            </tr>
 
-          <tr>
-            <td>DELETE</td> <td><a href="#user-list-update">/users/:name/list/:title</a></td> <td>Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later)</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            <tr>
+              <td>DELETE</td> <td><a href="#user-info-update">/users/:username</a></td> <td>Allow existing users to deregister (showing only a text that a user email has been removed—more on this later)</td>
+            </tr>
 
-    <div id="std-search">
-      <h2>Standard search API</h2>
+            <tr>
+              <td>POST</td> <td><a href="#user-list-update">/users/:username/movies/:movieID</a></td> <td>Allow users to add a movie to their list of favorites (showing only a text that a movie has been added—more on this later)</td>
+            </tr>
 
-      <p>Returns collection of movies and relevant data.</p>
+            <tr>
+              <td>DELETE</td> <td><a href="#user-list-update">/users/:username/movies/:movieID</a></td> <td>Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      <h3>Resource URL</h3>
-      <p>/movies, /movies/:title</p>
+      <div id="std-search" class="endpoint_docu">
+        <h2>Standard search API</h2>
 
-      <h3>Resource Information</h3>
+        <p>Returns collection of movies and relevant data.</p>
 
-      <table>
-        <tbody>
-          <tr>
-            <td>Response formats</td> <td>JSON</td>
-            <td>Method Types</td> <td>GET</td>
-          </tr>
-        </tbody>
-      </table>
+        <h3>Resource URL</h3>
+        <p><code>/movies, /movies/:title</code></p>
 
-      <h3>Parameters</h3>
+        <h3>Resource Information</h3>
 
-      <table>
-        <thead>
-          <tr>
-            <td>Name</td> <td>Required</td> <td>Description</td> <td>Example</td>
-          </tr>
-        </thead>
+        <table class="param_table">
+          <tbody>
+            <tr>
+              <td>Response formats</td> <td>JSON</td>
+            </tr>
+            <tr>
+              <td>Method Types</td> <td>GET</td>
+            </tr>
+          </tbody>
+        </table>
 
-        <tbody>
-          <tr>
-            <td>none</td> <td>optional</td> <td>Returns full catalogue of movies.</td> <td></td>
-          </tr>
+        <h3>Parameters</h3>
 
-          <tr>
-            <td>title</td> <td>optional</td> <td>Returns individual movie and it's data, by title.</td> <td>The Departed</td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="param_table">
+          <thead>
+            <tr>
+              <th>Name</th> <th>Required</th> <th>Description</th> <th>Example</th>
+            </tr>
+          </thead>
 
-      <h3>Example Request Body</h3>
+          <tbody>
+            <tr>
+              <td>none</td> <td>optional</td> <td>Returns full catalogue of movies.</td> <td></td>
+            </tr>
 
-      <p>None</p>
+            <tr>
+              <td>title</td> <td>optional</td> <td>Returns individual movie and it's data, by title.</td> <td>The Departed</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <h3>Example Response Body</h3>
+        <h3>Example Request Body</h3>
 
-      <pre>
-        <code>
+        <p>None</p>
+
+        <h3>Example Response Body</h3>
+
+        <pre>
+          <code>
 {
-  title: 'The Departed',
-  director: 'Martin Scorsese',
-  genre: 'crime',
-  description: 'An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in South Boston.',
-  imageURL: ''
+  <span class="is-key">_id:</span> <span class="is-string">"6111c161b96ee25e89c1cc83"</span>,
+  <span class="is-key">Title:</span> <span class="is-string">"The Departed"</span>,
+  <span class="is-key">Director:</span> {
+    <span class="is-key">Name:</span> <span class="is-string">"Martin Scorsese"</span>,
+    <span class="is-key">Bio:</span> <span class="is-string">"Martin Charles Scorsese was born on November 17, 1942 in Queens, New York City, to Catherine Scorsese (nee Cappa) and Charles Scorsese, who both worked in Manhattan's garment district, and whose families both came from Palermo, Sicily. He was raised in the neighborhood of Little Italy which later provided the inspiration for several of his films. Scorsese earned a B.S. degree in film communications in 1964, followed by an M.A. in the same field in 1966 at New York University's School of Film. During this time, he made numerous prize-winning short films including The Big Shave (1967), and directed his first feature film, Who's That Knocking at My Door (1967)."</span>,
+    <span class="is-key">Birth:</span> <span class="is-string">"1942"</span>,
+    <span class="is-key">Death:</span> <span class="is-bool">null</span>
+  },
+  <span class="is-key">Genre:</span> {
+    <span class="is-key">Name:</span> <span class="is-string">"Crime"</span>,
+    <span class="is-key">Description:</span> <span class="is-string">"Crime films, in the broadest sense, is a film genre inspired by and analogous to the crime fiction literary genre. Films of this genre generally involve various aspects of crime and its detection. Stylistically, the genre may overlap and combine with many other genres, such as drama or gangster film, but also include comedy, and, in turn, is divided into many sub-genres, such as mystery, suspense or noir."</span>
+  },
+  <span class="is-key">Description:</span> <span class="is-string">"An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in South Boston."</span>,
+  <span class="is-key">ImagePath:</span> <span class="is-string">"theDeparted.jpg"</span>,
+  <span class="is-key">Featured:</span> <span class="is-bool">true</span>
 },
 {
-  title: 'Inglourious Basterds',
-  director: 'Quentin Tarantino',
-  genre: 'Adventure',
-  description: 'In Nazi-occupied France during World War II, a plan to assassinate Nazi leaders by a group of Jewish U.S. soldiers coincides with a theatre owner\'s vengeful plans for the same.',
-  imageURL: ''
-},
-{
-  title: 'The Shawshank Redemption',
-  director: 'Frank Darabont',
-  genre: 'Drama',
-  description: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
-  imageURL: ''
-},
-{
-  title: 'The Dark Knight',
-  director: 'Christopher Nolan',
-  genre: 'Action',
-  description: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
-  imageURL: ''
+  <span class="is-key">_id:</span> <span class="is-string">"6111c7c0b96ee25e89c1cc84"</span>,
+  <span class="is-key">Title:</span> <span class="is-string">"Inglourious Basterds"</span>,
+  <span class="is-key">Director:</span> {
+    <span class="is-key">Name:</span> <span class="is-string">"Quentin Tarantino"</span>,
+    <span class="is-key">Bio:</span> <span class="is-string">"In January of 1992, first-time writer-director Tarantino's Reservoir Dogs (1992) appeared at the Sundance Film Festival. The film garnered critical acclaim and the director became a legend immediately. Two years later, he followed up Dogs success with Pulp Fiction (1994) which premiered at the Cannes film festival, winning the coveted Palme D'Or Award. At the 1995 Academy Awards, it was nominated for the best picture, best director and best original screenplay. Tarantino and writing partner Roger Avary came away with the award only for best original screenplay. In 1995, Tarantino directed one fourth of the anthology Four Rooms (1995) with friends and fellow auteurs Alexandre Rockwell, Robert Rodriguez and Allison Anders. The film opened December 25 in the United States to very weak reviews. Tarantino's next film was From Dusk Till Dawn (1996), a vampire/crime story which he wrote and co-starred with George Clooney. The film did fairly well theatrically."</span>,
+    <span class="is-key">Birth:</span> <span class="is-string">"1963"</span>,
+    <span class="is-key">Death:</span> <span class="is-bool">null</span>
+  },
+  <span class="is-key">Genre:</span> {
+    <span class="is-key">Name:</span> <span class="is-string">"Adventure"</span>,
+    <span class="is-key">Description:</span> <span class="is-string">"Adventure films are a genre of film whose plots feature elements of travel. They typically involve protagonists who must leave their home or place of comfort and go to far away lands to fulfill a goal. Settings play an important role in adventure films, sometimes as big as the characters themselves."</span>
+  },
+  <span class="is-key">Description:</span> <span class="is-string">"In Nazi-occupied France during World War II, a plan to assassinate Nazi leaders by a group of Jewish U.S. soldiers coincides with a theatre owner's vengeful plans for the same."</span>,
+  <span class="is-key">ImagePath:</span> <span class="is-string">"inglouriousBasterds.jpg"</span>,
+  <span class="is-key">Featured:</span> <span class="is-bool">true</span>
 }
-        </code>
-      </pre>
-    </div>
+          </code>
+        </pre>
+      </div>
 
-    <div id="genre-search">
-      <h2>Genre search API</h2>
+      <div id="genre-search" class="endpoint_docu">
+        <h2>Genre search API</h2>
 
-      <p>Returns collection of movies based on genre title.</p>
+        <p>Returns genre information.</p>
 
-      <h3>Resource URL</h3>
-      <p>/movies/genres/:title</p>
+        <h3>Resource URL</h3>
+        <p><code>/movies/genres/:name</code></p>
 
-      <h3>Resource Information</h3>
+        <h3>Resource Information</h3>
 
-      <table>
-        <tbody>
-          <tr>
-            <td>Response formats</td> <td>JSON</td>
-            <td>Method Types</td> <td>GET</td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="param_table">
+          <tbody>
+            <tr>
+              <td>Response formats</td> <td>JSON</td>
+            </tr>
+            <tr>
+              <td>Method Types</td> <td>GET</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <h3>Parameters</h3>
+        <h3>Parameters</h3>
 
-      <table>
-        <thead>
-          <tr>
-            <td>Name</td> <td>Required</td> <td>Description</td> <td>Example</td>
-          </tr>
-        </thead>
+        <table class="param_table">
+          <thead>
+            <tr>
+              <th>Name</th> <th>Required</th> <th>Description</th> <th>Example</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr>
-            <td>title</td> <td>required</td> <td>Returns collection of movies based on genre title.</td> <td>action</td>
-          </tr>
-        </tbody>
-      </table>
+          <tbody>
+            <tr>
+              <td>name</td> <td>required</td> <td>Returns information of genre based on genre name.</td> <td>Crime</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <h3>Example Request Body</h3>
+        <h3>Example Request Body</h3>
 
-      <p>None</p>
+        <p>None</p>
 
-      <h3>Example Response Body</h3>
+        <h3>Example Response Body</h3>
 
-      <pre>
-        <code>
+        <pre>
+          <code>
 {
-  title: 'The Dark Knight',
-  director: 'Christopher Nolan',
-  genre: 'action',
-  description: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
-  imageURL: ''
-},
-{
-  title: 'Gladiator',
-  director: 'Ridley Scott',
-  genre: 'action',
-  description: 'A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.',
-  imageURL: ''
-},
-{
-  title: 'Inception',
-  director: 'Christopher Nolan',
-  genre: 'action',
-  description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
-  imageURL: ''
+  <span class="is-key">Name:</span> <span class="is-string">"Crime"</span>,
+  <span class="is-key">Description:</span> <span class="is-string">"Crime films, in the broadest sense, is a film genre inspired by and analogous to the crime fiction literary genre. Films of this genre generally involve various aspects of crime and its detection. Stylistically, the genre may overlap and combine with many other genres, such as drama or gangster film, but also include comedy, and, in turn, is divided into many sub-genres, such as mystery, suspense or noir."</span>,
 }
-        </code>
-      </pre>
-    </div>
+          </code>
+        </pre>
+      </div>
 
-    <div id="director-search">
-      <h2>Director search API</h2>
+      <div id="director-search" class="endpoint_docu">
+        <h2>Director search API</h2>
 
-      <p>Returns data on director based on name.</p>
+        <p>Returns data on director based on name.</p>
 
-      <h3>Resource URL</h3>
-      <p>/movies/directors/:name</p>
+        <h3>Resource URL</h3>
+        <p><code>/movies/directors/:name</code></p>
 
-      <h3>Resource Information</h3>
+        <h3>Resource Information</h3>
 
-      <table>
-        <tbody>
-          <tr>
-            <td>Response formats</td> <td>JSON</td>
-            <td>Method Types</td> <td>GET</td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="param_table">
+          <tbody>
+            <tr>
+              <td>Response formats</td> <td>JSON</td>
+            </tr>
+            <tr>
+              <td>Method Types</td> <td>GET</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <h3>Parameters</h3>
+        <h3>Parameters</h3>
 
-      <table>
-        <thead>
-          <tr>
-            <td>Name</td> <td>Required</td> <td>Description</td> <td>Example</td>
-          </tr>
-        </thead>
+        <table class="param_table">
+          <thead>
+            <tr>
+              <th>Name</th> <th>Required</th> <th>Description</th> <th>Example</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr>
-            <td>name</td> <td>required</td> <td>Returns data on director based on name.</td> <td>Christopher Nolan</td>
-          </tr>
-        </tbody>
-      </table>
+          <tbody>
+            <tr>
+              <td>name</td> <td>required</td> <td>Returns data on director based on name.</td> <td>Quentin Tarantino</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <h3>Example Request Body</h3>
+        <h3>Example Request Body</h3>
 
-      <p>None</p>
+        <p>None</p>
 
-      <h3>Example Response Body</h3>
+        <h3>Example Response Body</h3>
 
-      <pre>
-        <code>
-  {
-    name: 'Christopher Nolan',
-    bio: 'Christopher Edward Nolan CBE is a British-American film director, producer, and screenwriter. His directorial efforts have grossed more than US$5 billion worldwide, garnered 36 Oscar nominations and 11 wins.',
-    birthYear: '1970',
-    deathYear: 'NA'
-  }
-        </code>
-      </pre>
-    </div>
-
-    <div id="user-register">
-      <h2>User register API</h2>
-
-      <p>Allow new users to register.</p>
-
-      <h3>Resource URL</h3>
-      <p>/users</p>
-
-      <h3>Resource Information</h3>
-
-      <table>
-        <tbody>
-          <tr>
-            <td>Response formats</td> <td>JSON</td>
-            <td>Method Types</td> <td>POST</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3>Parameters</h3>
-
-      <p>None</p>
-
-      <h3>Example Request Body</h3>
-
-      <pre>
-        <code>
+        <pre>
+          <code>
 {
-  username: 'NewMovieUser',
-  email: 'movieuser@gmail.com',
-  password: '******************'
+  <span class="is-key">Name:</span> <span class="is-string">"Quentin Tarantino"</span>,
+  <span class="is-key">Bio:</span> <span class="is-string">"In January of 1992, first-time writer-director Tarantino's Reservoir Dogs (1992) appeared at the Sundance Film Festival. The film garnered critical acclaim and the director became a legend immediately. Two years later, he followed up Dogs success with Pulp Fiction (1994) which premiered at the Cannes film festival, winning the coveted Palme D'Or Award. At the 1995 Academy Awards, it was nominated for the best picture, best director and best original screenplay. Tarantino and writing partner Roger Avary came away with the award only for best original screenplay. In 1995, Tarantino directed one fourth of the anthology Four Rooms (1995) with friends and fellow auteurs Alexandre Rockwell, Robert Rodriguez and Allison Anders. The film opened December 25 in the United States to very weak reviews. Tarantino's next film was From Dusk Till Dawn (1996), a vampire/crime story which he wrote and co-starred with George Clooney. The film did fairly well theatrically."</span>,
+  <span class="is-key">Birth:</span> <span class="is-string">"1963"</span>,
+  <span class="is-key">Death:</span> <span class="is-bool">null</span>
 }
-        </code>
-      </pre>
+          </code>
+        </pre>
+      </div>
 
-      <h3>Example Response Body</h3>
+      <div id="user-register" class="endpoint_docu">
+        <h2>User register API</h2>
 
-      <pre>
-        <code>
+        <p>Retrieve full list of users with GET. Allow new users to register with POST.</p>
+
+        <h3>Resource URL</h3>
+        <p><code>/users</code></p>
+
+        <h3>Resource Information</h3>
+
+        <table class="param_table">
+          <tbody>
+            <tr>
+              <td>Response formats</td> <td>JSON</td>
+            </tr>
+            <tr>
+              <td>Method Types</td> <td>GET, POST</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Parameters</h3>
+
+        <p>None</p>
+
+        <h3>Example Request Body (POST)</h3>
+
+        <pre>
+          <code>
 {
-  id: '53849'
-  username: 'NewMovieUser',
-  email: 'movieuser@gmail.com',
-  password: '******************'
+  <span class="is-key">Username:</span> <span class="is-string">"newMovieUser"</span>,
+  <span class="is-key">Password:</span> <span class="is-string">"iNeedTheEncode"</span>,
+  <span class="is-key">Email:</span> <span class="is-string">"randomEmail@gmail.com"</span>,
+  <span class="is-key">Birthday:</span> <span class="is-string">"November 14, 1973"</span>
 }
-        </code>
-      </pre>
-    </div>
+          </code>
+        </pre>
 
-    <div id="user-info-update">
-      <h2>User information update API</h2>
+        <h3>Example Response Body</h3>
 
-      <p>Allow users to update their information or deregister their profile.</p>
-
-      <h3>Resource URL</h3>
-      <p>/users/:name</p>
-
-      <h3>Resource Information</h3>
-
-      <table>
-        <tbody>
-          <tr>
-            <td>Response formats</td> <td>JSON</td>
-            <td>Method Types</td> <td>PUT, DELETE</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3>Parameters</h3>
-
-      <table>
-        <thead>
-          <tr>
-            <td>Name</td> <td>Required</td> <td>Description</td> <td>Example</td>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>name</td> <td>required</td> <td>Username of user that is to be updated.</td> <td>NewMovieUser</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3>Example Request Body</h3>
-
-      <pre>
-        <code>
+        <pre>
+          <code>
 {
-  username: 'TrueMovieUser'
+  <span class="is-key">_id:</span> <span class="is-string">"611325bcb96ee25e89c1cc8d"</span>,
+  <span class="is-key">Username:</span> <span class="is-string">"newMovieUser"</span>,
+  <span class="is-key">Password:</span> <span class="is-string">"*************"</span>,
+  <span class="is-key">Email:</span> <span class="is-string">"randomEmail@gmail.com"</span>,
+  <span class="is-key">Birthday:</span> <span class="is-string">"1973-10-14T00:00:00.000Z"</span>
 }
-        </code>
-      </pre>
+          </code>
+        </pre>
+      </div>
 
-      <h3>Example Response Body</h3>
+      <div id="user-info-update" class="endpoint_docu">
+        <h2>User information update API</h2>
 
-      <pre>
-        <code>
+        <p>Retrieve information on single user with GET. Update user information with PUT. Deregister user profile with DELETE.</p>
+
+        <h3>Resource URL</h3>
+        <p><code>/users/:username</code></p>
+
+        <h3>Resource Information</h3>
+
+        <table class="param_table">
+          <tbody>
+            <tr>
+              <td>Response formats</td> <td>JSON</td>
+            </tr>
+            <tr>
+              <td>Method Types</td> <td>GET, PUT, DELETE</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Parameters</h3>
+
+        <table class="param_table">
+          <thead>
+            <tr>
+              <th>Name</th> <th>Required</th> <th>Description</th> <th>Example</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>username</td> <td>required</td> <td>Username of user that is to be updated.</td> <td>NewMovieUser</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Example Request Body (PUT)</h3>
+
+        <pre>
+          <code>
 {
-  id: '53849'
-  username: 'TrueMovieUser',
-  email: 'movieuser@gmail.com',
-  password: '******************'
+  <span class="is-key">Username:</span> <span class="is-string">"newMovieUser"</span>,
+  <span class="is-key">Password:</span> <span class="is-string">"iNeedTheEncode"</span>,
+  <span class="is-key">Email:</span> <span class="is-string">"randomEmail@gmail.com"</span>,
+  <span class="is-key">Birthday:</span> <span class="is-string">"November 14, 1973"</span>
 }
-        </code>
-      </pre>
-    </div>
+          </code>
+        </pre>
 
-    <div id="user-list-update">
-      <h2>User favorite movie list update API</h2>
+        <h3>Example Response Body (GET, PUT)</h3>
 
-      <p>Allow users to add or delete a movie from their list of favorites.</p>
+        <pre>
+          <code>
+{
+  <span class="is-key">_id:</span> <span class="is-string">"611325bcb96ee25e89c1cc8d"</span>,
+  <span class="is-key">Username:</span> <span class="is-string">"newMovieUser"</span>,
+  <span class="is-key">Password:</span> <span class="is-string">"*************"</span>,
+  <span class="is-key">Email:</span> <span class="is-string">"randomEmail@gmail.com"</span>,
+  <span class="is-key">Birthday:</span> <span class="is-string">"1973-10-14T00:00:00.000Z"</span>
+}
+          </code>
+        </pre>
 
-      <h3>Resource URL</h3>
-      <p>/users/:name/list/:title</p>
+        <h3>Example Response Body (DELETE)</h3>
 
-      <h3>Resource Information</h3>
+        <p>NewMovieUser was delete</p>
+      </div>
 
-      <table>
-        <tbody>
-          <tr>
-            <td>Response formats</td> <td>String</td>
-            <td>Method Types</td> <td>PUT, DELETE</td>
-          </tr>
-        </tbody>
-      </table>
+      <div id="user-list-update" class="endpoint_docu">
+        <h2>User favorite movie list update API</h2>
 
-      <h3>Parameters</h3>
+        <p>Allow users to add or delete a movie from their list of favorites.</p>
 
-      <table>
-        <thead>
-          <tr>
-            <td>Name</td> <td>Required</td> <td>Description</td> <td>Example</td>
-          </tr>
-        </thead>
+        <h3>Resource URL</h3>
+        <p><code>/users/:username/movies/:movieID</code></p>
 
-        <tbody>
-          <tr>
-            <td>name</td> <td>required</td> <td>Username of user that is to be updated.</td> <td>TrueMovieUser</td>
-          </tr>
-          <tr>
-            <td>title</td> <td>required</td> <td>Title of the movie to be added/deleted from the list</td> <td>The Departed</td>
-          </tr>
-        </tbody>
-      </table>
+        <h3>Resource Information</h3>
 
-      <h3>Example Request Body</h3>
+        <table class="param_table">
+          <tbody>
+            <tr>
+              <td>Response formats</td> <td>String</td>
+            </tr>
+            <tr>
+              <td>Method Types</td> <td>POST, DELETE</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <p>None</p>
+        <h3>Parameters</h3>
 
-      <h3>Example Response Body</h3>
+        <table class="param_table">
+          <thead>
+            <tr>
+              <th>Name</th> <th>Required</th> <th>Description</th> <th>Example</th>
+            </tr>
+          </thead>
 
-      <p>"Movie Title" has been successfully added/delete.</p>
+          <tbody>
+            <tr>
+              <td>username</td> <td>required</td> <td>Username of user that is to be updated.</td> <td>TrueMovieUser</td>
+            </tr>
+            <tr>
+              <td>movieID</td> <td>required</td> <td>ID of the movie to be added/deleted from the list</td> <td>611326ddb96ee25e89c1cc92</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Example Request Body</h3>
+
+        <p>None</p>
+
+        <h3>Example Response Body</h3>
+
+        <pre>
+          <code>
+{
+  <span class="is-key">_id:</span> <span class="is-string">"611325bcb96ee25e89c1cc8d"</span>,
+  <span class="is-key">Username:</span> <span class="is-string">"newMovieUser"</span>,
+  <span class="is-key">Password:</span> <span class="is-string">"*************"</span>,
+  <span class="is-key">Email:</span> <span class="is-string">"randomEmail@gmail.com"</span>,
+  <span class="is-key">Birthday:</span> <span class="is-string">"1973-10-14T00:00:00.000Z"</span>,
+  <span class="is-key">FavoriteMovies:</span> [
+    <span class="is-string">"611326ddb96ee25e89c1cc92"</span>,
+    <span class="is-string">"61132190b96ee25e89c1cc8a"</span>,
+    <span class="is-string">"611321c7b96ee25e89c1cc8c"</span>
+  ]
+}
+          </code>
+        </pre>
+      </div>
     </div>
   </body>
 </html>
