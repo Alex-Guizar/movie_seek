@@ -49,7 +49,7 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req
     });
 });
 
-// Gets the list of data about ALL movies in a genre, by genre name
+// Gets the information about a genre
 app.get('/movies/genres/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Genre.Name': req.params.name })
     .then((movie) => res.status(200).json(movie.Genre))
