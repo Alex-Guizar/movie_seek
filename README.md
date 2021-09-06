@@ -11,32 +11,30 @@ I wanted to build a project from the ground up to create an app where users may 
 
 ## Usage
 
-### Movies
+Create an account and login to view details about your favorite movies, directors, and genres. You may also add your favorite movies to your account list to view or modify later. Users may also deregister their account.
 
-{ _id: "6111c161b96ee25e89c1cc83", Title: "The Departed", Director: { Name: "Martin Scorsese", Bio: "Director's Bio", Birth: "1942", Death: null }, Genre: { Name: "Crime", Description: "Genre description" }, Description: "Movie description", ImagePath: "theDeparted.jpg", Featured: true }
+[For formatted documentation click here.](https://movie-seek-1949.herokuapp.com/documentation.html)
+
+### Movies
 
 | Request | URL | Method | Parameter | Request Body Data | Response Body Data |
 | ------- | --- | ------ | --------- | ----------------- | ------------------ |
-| Return a list of ALL movies to the user | /movies | GET | None | None | JSON Object: { _id: "6111c161b96ee25e89c1cc83", Title: "The Departed", Director: { Name: "Martin Scorsese", Bio: "Director's Bio", Birth: "1942", Death: null }, Genre: { Name: "Crime", Description: "Genre description" }, Description: "Movie description", ImagePath: "theDeparted.jpg", Featured: true } |
-| Return data about a single movie by title to the user | /movies/:title | GET | :title | None |  |
-| Return a list of ALL movies to the Return data about a genre by name | /movies/genres/:name | GET | :name | None |  |
-| Return data about a director by name | /movies/directors/:name | GET | :name | None |  |
+| Return a list of ALL movies to the user | /movies | GET | None | None | JSON object holding information about all movies: <br>[{ _id: "6111c161b96ee25e89c1cc83", Title: "Movie title", Director: { Name: "Director name", Bio: "Director bio", Birth: "Date", Death: null }, Genre: { Name: "Genre name", Description: "Genre description" }, Description: "Movie description", ImagePath: "imagePath.jpg", Featured: true }] |
+| Return data about a single movie by title to the user | /movies/:title | GET | :title | None | JSON object holding information about a single movie <br>[{ _id: "6111c161b96ee25e89c1cc83", Title: "Movie title", Director: { Name: "Director name", Bio: "Director bio", Birth: "Date", Death: null }, Genre: { Name: "Genre name", Description: "Genre description" }, Description: "Movie description", ImagePath: "imagePath.jpg", Featured: true }] |
+| Return data about a genre by name | /movies/genres/:name | GET | :name | None | JSON object holding information about a genre <br>{ Name: "Genre name", Description: "Genre description", } |
+| Return data about a director by name | /movies/directors/:name | GET | :name | None | JSON object holding information about a director: <br>{ Name: "Director name", Bio: "Director bio", Birth: "date", Death: null } |
 
 ### Users
 
 | Request | URL | Method | Parameter | Request Body Data | Response Body Data |
 | ------- | --- | ------ | --------- | ----------------- | ------------------ |
-| Retrieve full list of users | /users | GET | None | None | |
-| Allow new users to register | /users | POST | None | EDIT | |
-| Retrieve single user by username | /users/:username | GET | :username | None | |
-| Allow users to update their user info | /users/:username | PUT | :username | EDIT | |
-| Allow existing users to deregister | /users/:username | DELETE | :username | None | |
-| Allow users to add a movie to their list of favorites | /users/:username/movies/:movieID | POST | :username, :movieID | None | |
-| Allow users to remove a movie from their list of favorites | /users/:username/movies/:movieID | DELETE | :username, :movieID | None | |
-
-
-
-  <td>PUT</td> <td><a href="#user-info-update">/users/:username</a></td> <td>Allow users to update their user info (username)</td>
+| Retrieve full list of users | /users | GET | None | None | JSON object holding information about all users: <br>[{ _id: "611325bcb96ee25e89c1cc8d", Username: "newMovieUser", Password: "23j3h4jkl1h23jbl1k23jh5lj", Email: "randomEmail@gmail.com", Birthday: "1973-10-14T00:00:00.000Z", FavoriteMovies: ["611326ddb96ee25e89c1cc92", "61132190b96ee25e89c1cc8a", "611321c7b96ee25e89c1cc8c"]}] |
+| Allow new users to register | /users | POST | None | JSON object holding information to be created: <br>{ Username: "newMovieUser", Password: "password1", Email: "randomEmail@gmail.com", Birthday: "November 14, 1973" } | JSON object holding information about created user: <br>[{ _id: "611325bcb96ee25e89c1cc8d", Username: "newMovieUser", Password: "23j3h4jkl1h23jbl1k23jh5lj", Email: "randomEmail@gmail.com", Birthday: "1973-10-14T00:00:00.000Z", FavoriteMovies: []}] |
+| Retrieve single user by username | /users/:username | GET | :username | None | JSON object holding information of a single user: <br>[{ _id: "611325bcb96ee25e89c1cc8d", Username: "newMovieUser", Password: "23j3h4jkl1h23jbl1k23jh5lj", Email: "randomEmail@gmail.com", Birthday: "1973-10-14T00:00:00.000Z", FavoriteMovies: ["611326ddb96ee25e89c1cc92", "61132190b96ee25e89c1cc8a", "611321c7b96ee25e89c1cc8c"]}] |
+| Allow users to update their user info | /users/:username | PUT | :username | JSON object holding information to be updated: <br>{ Username: "newMovieUser", Password: "password1", Email: "randomEmail@gmail.com", Birthday: "November 14, 1973" } | JSON object holding information of updated user: <br>[{ _id: "611325bcb96ee25e89c1cc8d", Username: "newMovieUser", Password: "23j3h4jkl1h23jbl1k23jh5lj", Email: "randomEmail@gmail.com", Birthday: "1973-10-14T00:00:00.000Z", FavoriteMovies: []}] |
+| Allow existing users to deregister | /users/:username | DELETE | :username | None | String mentioning deleted user |
+| Allow users to add a movie to their list of favorites | /users/:username/movies/:movieID | POST | :username, :movieID | None | JSON object holding information of updated user: <br>[{ _id: "611325bcb96ee25e89c1cc8d", Username: "newMovieUser", Password: "23j3h4jkl1h23jbl1k23jh5lj", Email: "randomEmail@gmail.com", Birthday: "1973-10-14T00:00:00.000Z", FavoriteMovies: ["611326ddb96ee25e89c1cc92", "61132190b96ee25e89c1cc8a", "611321c7b96ee25e89c1cc8c"]}] |
+| Allow users to remove a movie from their list of favorites | /users/:username/movies/:movieID | DELETE | :username, :movieID | None | JSON object holding information of updated user: <br>[{ _id: "611325bcb96ee25e89c1cc8d", Username: "newMovieUser", Password: "23j3h4jkl1h23jbl1k23jh5lj", Email: "randomEmail@gmail.com", Birthday: "1973-10-14T00:00:00.000Z", FavoriteMovies: ["611326ddb96ee25e89c1cc92", "61132190b96ee25e89c1cc8a", "611321c7b96ee25e89c1cc8c"]}] |
 
 ## Technical Requirements
 
@@ -82,3 +80,7 @@ I wanted to build a project from the ground up to create an app where users may 
 * Express
 
 ## Hosted on Heroku
+
+App published link: (https://movie-seek-1949.herokuapp.com/)
+
+Run with <br>`node index.js`
