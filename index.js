@@ -29,7 +29,7 @@ require('./passport');
 // Movie Requests
 
 // Gets the list of data about ALL movies
-app.get('/movies', /*passport.authenticate('jwt', { session: false }),*/ (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
     .then((movies) => res.status(200).json(movies))
     .catch((err) => {
