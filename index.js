@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Add cors to app
 const cors = require('cors');
-let  allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'http://localhost:1234', 'https://movie-seek.netlify.app', 'https://alex-guizar.github.io/movie_seek-Angular-client/'];
+let  allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'http://localhost:1234', 'https://movie-seek.netlify.app', 'https://alex-guizar.github.io'];
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
